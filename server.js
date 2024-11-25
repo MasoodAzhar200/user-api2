@@ -17,7 +17,7 @@ app.use(passport.initialize());
 
 const opts = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: "zTI+0B49E6+G"
+    secretOrKey: process.env.JWT_SECRET
 };
 
 passport.use(new Strategy(opts, function(jwt_payload, done) {
@@ -42,7 +42,7 @@ app.post("/api/user/login", (req, res) => {
             _id: user._id,
             userName: user.userName
         };
-        const token = jwt.sign(payload, "zTI+0B49E6+G", { expiresIn: '1d' });
+        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1d' });
         res.json({ message: "login successful", token: token });
     }).catch(msg => {
         res.status(422).json({ "message": msg });
